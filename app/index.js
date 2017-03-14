@@ -34,7 +34,7 @@ class Game {
     drawText(txt) {
         this.ctx.save();
         this.ctx.fillStyle = "#fefefe";
-        this.ctx.fillText(txt, this.ctx.canvas.width / 2, this.ctx.canvas.height / 2);
+        this.ctx.fillText(txt, this.ctx.canvas.width / 2 - 50, this.ctx.canvas.height / 2 - 50);
         this.ctx.textBaseline = 'middle';
         this.ctx.font = "italic 100px sans-serif";
         this.ctx.textAlign = 'center';
