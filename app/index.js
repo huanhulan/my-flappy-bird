@@ -160,14 +160,18 @@ class Game {
     }
 
     bindEvent() {
-        document.body.addEventListener("click", () => {
-            if (this.isStart && this.isRuing) {
-                this.hero.speed = -0.3;
+        var self = this;
+
+        function handleTap(e) {
+            if (self.isStart && self.isRuing) {
+                self.hero.speed = -0.3;
             }
-            if (!this.isRuing) {
-                this.restart()
+            if (!self.isRuing) {
+                self.restart()
             }
-        });
+        }
+        document.body.addEventListener("mousedown", handleTap);
+        document.body.addEventListener("touchstart", handleTap);
     }
 }
 
