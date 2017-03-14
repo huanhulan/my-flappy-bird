@@ -42,7 +42,7 @@ class Game {
     }
 
     gameOver() {
-        this.drawText(`your score is ${this.score}`);
+        this.drawText(`your score is ${this.score}, click to restart.`);
         this.isRuing = false;
     }
 
@@ -145,10 +145,27 @@ class Game {
         })();
     }
 
+    restart() {
+        this.roles = [];
+        this.pipes = [];
+        this.isStart = false;
+        this.isRuing = false;
+        this.lastFrameTime = new Date();
+        this.curFrameTime = 0;
+        this.delta = 0;
+        this.hero = null;
+        this.score = 0;
+        this.lastId;
+        return this.start();
+    }
+
     bindEvent() {
         document.body.addEventListener("click", () => {
-            if (this.isStart) {
+            if (this.isStart && this.isRuing) {
                 this.hero.speed = -0.3;
+            }
+            if (!this.isRuing) {
+                this.restart()
             }
         });
     }
