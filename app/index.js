@@ -55,7 +55,7 @@ class Game {
 
 
         // draw sky
-        var totalSkyNo = Math.ceil(window.innerWidth / skyImg.width) + 1;
+        var totalSkyNo = Math.ceil(window.innerWidth / skyImg.width) + 2;
         for (let i = 0; i < totalSkyNo; i++) {
             var sky = new Fly.Sky({
                 ctx: ctx,
@@ -69,7 +69,6 @@ class Game {
 
         // draw pipe
         var totalPipeNo = Math.ceil(window.innerWidth / pipeDownImg.width);
-        console.log(totalPipeNo)
         for (let i = 0; i < totalPipeNo; i++) {
             let pipe = new Fly.Pipe({
                 ctx: ctx,
