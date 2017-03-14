@@ -151,8 +151,8 @@ class Game {
 }
 
 var cv = document.createElement('canvas');
-cv.width = 800;
-cv.height = 800 * (window.innerHeight / window.innerWidth);
+cv.width = 600 * (window.innerWidth / window.innerHeight);
+cv.height = 600;
 cv.id = "#cv";
 cv.style.border = "1px solid red";
 document.body.append(cv);
