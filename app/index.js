@@ -55,24 +55,29 @@ class Game {
 
 
         // draw sky
-        for (var i = 0; i < 2; i++) {
+        var totalSkyNo = Math.ceil(window.innerWidth / skyImg.width) + 1;
+        for (let i = 0; i < totalSkyNo; i++) {
             var sky = new Fly.Sky({
                 ctx: ctx,
                 img: skyImg,
-                x: i * skyImg.width
+                x: i * skyImg.width,
+                totalSkyNo: totalSkyNo
             });
 
             self.roles.push(sky);
         }
 
         // draw pipe
-        for (let i = 0; i < 6; i++) {
+        var totalPipeNo = Math.ceil(window.innerWidth / pipeDownImg.width);
+        console.log(totalPipeNo)
+        for (let i = 0; i < totalPipeNo; i++) {
             let pipe = new Fly.Pipe({
                 ctx: ctx,
                 imgUp: pipeUpImg,
                 imgDown: pipeDownImg,
                 x: pipeUpImg.width * 3 * i + 300,
-                id: i
+                id: i,
+                totalPipeNo: totalPipeNo
             });
             self.pipes.push(pipe);
             self.roles.push(pipe);

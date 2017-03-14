@@ -7,6 +7,7 @@ class Sky {
         this.x = opts.x;
         this.y = 0;
         this.speed = 0.15;
+        this.totalSkyNo = opts.totalSkyNo;
     }
 
     draw(delta) {
@@ -15,7 +16,7 @@ class Sky {
         this.x = this.x - this.speed * delta;
 
         if (this.x <= -this.imgW) {
-            this.x += this.imgW * 2;
+            this.x += this.imgW * this.totalSkyNo;
         }
         ctx.save();
         ctx.drawImage(this.img, 0, 0, this.imgW, this.imgH, this.x, this.y, this.imgW, this.imgH);

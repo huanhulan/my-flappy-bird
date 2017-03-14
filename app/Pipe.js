@@ -13,6 +13,7 @@ class Pipe {
         this.downY = 0;
         this.speed = 0.15;
         this.pipeSpace = 150;
+        this.totalPipeNo = opt.totalPipeNo;
         // generate the first pipe group
         this.initPipeY();
     }
@@ -24,7 +25,7 @@ class Pipe {
         if (this.x <= -this.imgW) {
             // *3 because the margin between two pipes is the 3 times width of a single width of a pipe;
             // we need 6 pipe
-            this.x += this.imgW * 3 * 6;
+            this.x += this.imgW * 3 * this.totalPipeNo;
             // generate new pipe
             this.initPipeY();
         }
