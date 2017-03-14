@@ -66,12 +66,13 @@ class Game {
         }
 
         // draw pipe
-        for (var i = 0; i < 6; i++) {
-            var pipe = new Fly.Pipe({
+        for (let i = 0; i < 6; i++) {
+            let pipe = new Fly.Pipe({
                 ctx: ctx,
                 imgUp: pipeUpImg,
                 imgDown: pipeDownImg,
-                x: pipeUpImg.width * 3 * i + 300
+                x: pipeUpImg.width * 3 * i + 300,
+                id: i
             });
             self.pipes.push(pipe);
             self.roles.push(pipe);
@@ -128,7 +129,6 @@ class Game {
             } else {
                 self.pipes.forEach(function(pipe) {
                     if (self.hero.x >= pipe.x && self.hero.x <= (pipe.x + pipe.imgW) && self.lastId !== pipe.id) {
-                        console.log(self.lastId, pipe.id)
                         self.score += 1;
                         self.lastId = pipe.id;
                     }
@@ -152,7 +152,7 @@ class Game {
 
 var cv = document.createElement('canvas');
 cv.width = 800;
-cv.height = 600;
+cv.height = 800 * (window.innerHeight / window.innerWidth);
 cv.id = "#cv";
 cv.style.border = "1px solid red";
 document.body.append(cv);

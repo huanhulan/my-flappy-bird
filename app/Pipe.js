@@ -4,7 +4,7 @@ class Pipe {
 
         this.imgUp = opt.imgUp;
         this.imgDown = opt.imgDown;
-        this.id = +new Date() + Math.random() * 1000;
+        this.id = opt.id;
         this.imgW = this.imgUp.width;
         this.imgH = this.imgUp.height;
         this.x = opt.x;
