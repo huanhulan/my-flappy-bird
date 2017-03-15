@@ -1,5 +1,6 @@
 import Fly from './Fly';
 import '../src/style.css'
+import Worker from 'worker-loader!./scoreWorker';
 class Game {
     constructor(opts) {
         this.ctx = opts.ctx;
@@ -16,6 +17,39 @@ class Game {
         this.score = 0;
         // record last passed pipe
         this.lastId;
+        this.worker = opts.worker;
+        var self = this;
+        if (this.worker) {
+            this.getScroe = function() {
+                var pipes = self.pipes.map(function(pipe) {
+                    return {
+                        id: pipe.id,
+                        imgW: pipe.imgW,
+                        x: pipe.x
+                    };
+                });
+                var msg = {
+                    pipes: pipes,
+                    x: self.hero.x,
+                    score: self.score,
+                    lastId: self.lastId
+                };
+                self.worker.postMessage(msg);
+                self.worker.onmessage = function(e) {
+                    self.lastId = e.data.lastId;
+                    self.score = e.data.score;
+                }
+            }
+        } else {
+            this.getScroe = function() {
+                self.pipes.forEach(function(pipe) {
+                    if (self.hero.x >= pipe.x && self.hero.x <= (pipe.x + pipe.imgW) && self.lastId !== pipe.id) {
+                        self.score += 1;
+                        self.lastId = pipe.id;
+                    }
+                });
+            }
+        }
     }
 
     start() {
@@ -131,12 +165,7 @@ class Game {
                 self.ctx.isPointInPath(self.hero.x, self.hero.y)) {
                 self.gameOver();
             } else {
-                self.pipes.forEach(function(pipe) {
-                    if (self.hero.x >= pipe.x && self.hero.x <= (pipe.x + pipe.imgW) && self.lastId !== pipe.id) {
-                        self.score += 1;
-                        self.lastId = pipe.id;
-                    }
-                })
+                self.getScroe();
             }
 
             if (self.isRuing) {
@@ -175,6 +204,7 @@ class Game {
     }
 }
 
+var scoreWorker = new Worker;
 var cv = document.createElement('canvas');
 cv.width = 600 * (window.innerWidth / window.innerHeight);
 cv.height = 600;
@@ -184,6 +214,7 @@ document.body.append(cv);
 
 var ctx = cv.getContext("2d");
 var game = new Game({
-    ctx: ctx
+    ctx: ctx,
+    worker: scoreWorker
 });
 game.start();

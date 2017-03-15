@@ -17,6 +17,7 @@
     "nodemon": "^1.11.0",
     "style-loader": "^0.13.2",
     "webpack": "^2.2.0-rc.7",
-    "webpack-dev-server": "^2.3.0"
+    "webpack-dev-server": "^2.3.0",
+    "worker-loader": "^0.8.0"
   }
 }
