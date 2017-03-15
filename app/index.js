@@ -66,9 +66,10 @@ class Game {
     }
 
     drawText(txt) {
+        var textWidth = this.ctx.measureText(txt).width;
         this.ctx.save();
         this.ctx.fillStyle = "#fefefe";
-        this.ctx.fillText(txt, this.ctx.canvas.width / 2 - 50, this.ctx.canvas.height / 2 - 50);
+        this.ctx.fillText(txt, this.ctx.canvas.width / 2 - textWidth / 2, this.ctx.canvas.height / 2);
         this.ctx.textBaseline = 'middle';
         this.ctx.font = "italic 100px sans-serif";
         this.ctx.textAlign = 'center';
@@ -92,7 +93,7 @@ class Game {
         var totalSkyNo = Math.ceil(window.innerWidth / skyImg.width) + 2;
         for (let i = 0; i < totalSkyNo; i++) {
             var sky = new Fly.Sky({
-                ctx: ctx,
+                ctx: this.ctx,
                 img: skyImg,
                 x: i * skyImg.width,
                 totalSkyNo: totalSkyNo
@@ -105,7 +106,7 @@ class Game {
         var totalPipeNo = Math.ceil(window.innerWidth / pipeDownImg.width);
         for (let i = 0; i < totalPipeNo; i++) {
             let pipe = new Fly.Pipe({
-                ctx: ctx,
+                ctx: this.ctx,
                 imgUp: pipeUpImg,
                 imgDown: pipeDownImg,
                 x: pipeUpImg.width * 3 * i + 300,
@@ -118,7 +119,7 @@ class Game {
 
         // draw bird
         var bird = new Fly.Bird({
-            ctx: ctx,
+            ctx: this.ctx,
             img: imgList["birds"]
         });
 
@@ -200,21 +201,22 @@ class Game {
             }
         }
         document.body.addEventListener("mousedown", handleTap);
-        document.body.addEventListener("touchstart", handleTap);
+        document.body.addEventListener("touchend", handleTap);
     }
 }
+window.onload = function() {
+    var scoreWorker = new Worker;
+    var cv = document.createElement('canvas');
+    cv.width = 600 * (window.innerWidth / window.innerHeight);
+    cv.height = 600;
+    cv.id = "#cv";
+    cv.style.border = "1px solid red";
+    document.body.appendChild(cv);
 
-var scoreWorker = new Worker;
-var cv = document.createElement('canvas');
-cv.width = 600 * (window.innerWidth / window.innerHeight);
-cv.height = 600;
-cv.id = "#cv";
-cv.style.border = "1px solid red";
-document.body.append(cv);
-
-var ctx = cv.getContext("2d");
-var game = new Game({
-    ctx: ctx,
-    worker: scoreWorker
-});
-game.start();
+    var ctx = cv.getContext("2d");
+    var game = new Game({
+        ctx: ctx,
+        worker: scoreWorker
+    });
+    game.start();
+}
