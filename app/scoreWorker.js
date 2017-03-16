@@ -6,7 +6,7 @@ onmessage = function(e) {
     var score = d.score;
     var lastId = d.lastId;
     var res = {};
-    for (var i = pipes.length - 1; i >= 0; i--) {
+    for (var i = 0; i <= pipes.length - 1; i++) {
         var pipe = pipes[i];
 
         if (x >= pipe.x && x <= (pipe.x + pipe.imgW) && lastId !== pipe.id) {
