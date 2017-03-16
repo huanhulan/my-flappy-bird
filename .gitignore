@@ -3,3 +3,4 @@
 .idea/
 *.log
 node_modules/
+app/ball.js
