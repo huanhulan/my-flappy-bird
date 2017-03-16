@@ -139,7 +139,7 @@ class Game {
 
         (function draw() {
             self.ctx.clearRect(0, 0, cv.width, cv.height);
-            // self.ctx.beginPath();
+            self.ctx.beginPath();
             self.curFrameTime = new Date();
 
             if (self.isStart) {
@@ -157,6 +157,7 @@ class Game {
             if (i) {
                 self.drawText(`${i} ${'second'+(i>1?'s':'')} to start`);
             }
+            self.ctx.closePath();
             // collision detection
             // 1 bird fly beyond sky
             // 2 bird get on the ground

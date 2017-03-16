@@ -33,9 +33,6 @@ class Pipe {
         ctx.drawImage(this.imgUp, 0, 0, this.imgW, this.imgH, this.x, this.upY, this.imgW, this.imgH);
         ctx.drawImage(this.imgDown, 0, 0, this.imgW, this.imgH, this.x, this.downY, this.imgW, this.imgH);
         ctx.restore();
-
-        // draw the path of pipes
-        // this.initPath();
     }
 
     initPipeY() {
@@ -44,13 +41,6 @@ class Pipe {
         this.upY = pipeTopHeight - this.imgH;
         // the y coordiation for the downside pipe
         this.downY = pipeTopHeight + this.pipeSpace;
-    }
-
-    // for collision detection
-    initPath() {
-        var ctx = this.ctx;
-        ctx.rect(this.x, this.upY, this.imgW, this.imgH);
-        ctx.rect(this.x, this.downY, this.imgW, this.imgH);
     }
 }
 
