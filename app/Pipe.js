@@ -35,7 +35,7 @@ class Pipe {
         ctx.restore();
 
         // draw the path of pipes
-        this.initPath();
+        // this.initPath();
     }
 
     initPipeY() {

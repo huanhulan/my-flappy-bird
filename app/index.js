@@ -1,6 +1,7 @@
 import Fly from './Fly';
 import '../src/style.css'
 import Worker from 'worker-loader!./scoreWorker';
+
 class Game {
     constructor(opts) {
         this.ctx = opts.ctx;
@@ -19,35 +20,33 @@ class Game {
         this.lastId;
         this.worker = opts.worker;
         var self = this;
-        if (this.worker) {
-            this.getScroe = function() {
-                var pipes = self.pipes.map(function(pipe) {
-                    return {
-                        id: pipe.id,
-                        imgW: pipe.imgW,
-                        x: pipe.x
-                    };
-                });
-                var msg = {
-                    pipes: pipes,
-                    x: self.hero.x,
-                    score: self.score,
-                    lastId: self.lastId
+
+        this.getScroe = function() {
+            var pipes = self.pipes.map(function(pipe) {
+                return {
+                    id: pipe.id,
+                    imgW: pipe.imgW,
+                    imgH: pipe.imgH,
+                    x: pipe.x,
+                    upY: pipe.upY,
+                    downY: pipe.downY
                 };
-                self.worker.postMessage(msg);
-                self.worker.onmessage = function(e) {
+            });
+            var msg = {
+                pipes: pipes,
+                x: self.hero.x,
+                y: self.hero.y,
+                score: self.score,
+                lastId: self.lastId
+            };
+            self.worker.postMessage(msg);
+            self.worker.onmessage = function(e) {
+                if (e.data.gameOver === true) {
+                    return self.gameOver();
+                } else {
                     self.lastId = e.data.lastId;
                     self.score = e.data.score;
                 }
-            }
-        } else {
-            this.getScroe = function() {
-                self.pipes.forEach(function(pipe) {
-                    if (self.hero.x >= pipe.x && self.hero.x <= (pipe.x + pipe.imgW) && self.lastId !== pipe.id) {
-                        self.score += 1;
-                        self.lastId = pipe.id;
-                    }
-                });
             }
         }
     }
@@ -140,7 +139,7 @@ class Game {
 
         (function draw() {
             self.ctx.clearRect(0, 0, cv.width, cv.height);
-            self.ctx.beginPath();
+            // self.ctx.beginPath();
             self.curFrameTime = new Date();
 
             if (self.isStart) {
@@ -162,8 +161,7 @@ class Game {
             // 1 bird fly beyond sky
             // 2 bird get on the ground
             // 3 bird collide with pipe
-            if (self.hero.y <= 0 || self.hero.y >= (cv.height - landImg.height) ||
-                self.ctx.isPointInPath(self.hero.x, self.hero.y)) {
+            if (self.hero.y <= 0 || self.hero.y >= (cv.height - landImg.height)) {
                 self.gameOver();
             } else {
                 self.getScroe();
@@ -204,6 +202,7 @@ class Game {
         document.body.addEventListener("touchend", handleTap);
     }
 }
+
 window.onload = function() {
     var scoreWorker = new Worker;
     var cv = document.createElement('canvas');
