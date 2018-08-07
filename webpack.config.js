@@ -4,17 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 const PATHS = {
-    app: path.join(__dirname, 'app'),
-    build: path.join(__dirname, 'build')
+    app: path.join(__dirname, 'app/index.js'),
+    build: path.join(__dirname, 'dist/')
 };
+const JS_PUBLIC_URL = "https://huanhulan.github.io/my-flappy-bird/dist/";
+const FILE_PUBLIC_URL = 'https://huanhulan.github.io/my-flappy-bird/src/';
 
 const common = {
-    entry: {
-        paa: PATHS.app
-    },
+    entry: PATHS.app,
     output: {
-        path: PATHS.duild,
-        filename: '[name].js'
+        filename: 'index.js',
+        path: PATHS.build,
+        publicPath: "/dist/"
     },
     module: {
         rules: [{
@@ -23,8 +24,9 @@ const common = {
         }, ],
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Webpack demo'
+        new webpack.DefinePlugin({
+            ENV: JSON.stringify(process.env.NODE_ENV),
+            FILE_PUBLIC_URL: JSON.stringify('../src/'),
         })
     ],
 };
@@ -60,14 +62,29 @@ const developmentConfig = {
 };
 
 module.exports = function(env) {
-    console.log('env', env);
-    if (env === 'production') {
-        return common;
+    if (env.NODE_ENV === 'production') {
+        return Object.assign(
+            common,
+            {
+                output: {
+                    filename: 'index.js',
+                    path: PATHS.build,
+                    publicPath: `${JS_PUBLIC_URL}`
+                },
+                plugins: [
+                    new webpack.DefinePlugin({
+                        ENV: JSON.stringify(process.env.NODE_ENV),
+                        FILE_PUBLIC_URL: JSON.stringify(FILE_PUBLIC_URL),
+                    })
+                ]
+            }
+        );
     }
 
     return Object.assign({},
         common,
-        developmentConfig, {
+        developmentConfig,
+        {
             plugins: common.plugins.concat(developmentConfig.plugins),
         }
     );

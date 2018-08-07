@@ -15,7 +15,7 @@ Fly.loadImages = function(imgsSrcArr, callback) {
 
     imgsSrcArr.forEach(function(imgSrc) {
         var img = new Image();
-        img.src = "../src/" + imgSrc + ".png";
+        img.src = FILE_PUBLIC_URL + imgSrc + ".png";
 
         imgList[imgSrc] = img;
 
